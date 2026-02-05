@@ -2,7 +2,7 @@
 
 Learn how to extend the WordPress Gutenberg table block with custom styling options, sticky columns, and CTA buttons without creating a new block from scratch.
 
-![WP Table Block Extended](https://via.placeholder.com/800x400/1e40af/ffffff?text=WP+Table+Block+Extended)
+![WP Table Block Extended - Freeze First Column](docs/screenshot.png)
 
 ## Table of Contents
 
