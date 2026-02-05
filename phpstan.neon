@@ -1,0 +1,17 @@
+parameters:
+	level: 8
+	paths:
+		- wp-table-block-extended.php
+		- src/
+	excludePaths:
+		- vendor/
+		- node_modules/
+		- build/
+	bootstrapFiles:
+		- vendor/autoload.php
+	scanFiles:
+		- wp-table-block-extended.php
+	ignoreErrors:
+		# WordPress functions that PHPStan doesn't know about.
+		- '#^Function [a-z_]+ not found\.$#'
+	treatPhpDocTypesAsCertain: false

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WP Table Block Extended - Live Demo</title>
+    <style>
+        /* CSS Custom Properties */
+        :root {
+            --wtbe-cell-padding-x: 24px;
+            --wtbe-cell-padding-y: 16px;
+            --wtbe-border-color: #e0e0e0;
+            --wtbe-border-radius: 4px;
+            --wtbe-font-size: 14px;
+            --wtbe-header-primary: #1e40af;
+            --wtbe-header-dark: #1f2937;
+            --wtbe-header-light: #9ca3af;
+            --wtbe-header-success: #059669;
+            --wtbe-header-warning: #d97706;
+            --wtbe-row-odd: #ffffff;
+            --wtbe-row-even: #f9fafb;
+            --wtbe-cta-bg: #2563eb;
+            --wtbe-cta-hover: #1d4ed8;
+            --wtbe-cta-text: #ffffff;
+        }
+
+        /* Page styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f8fafc;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #1e40af;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        .demo-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            margin: 1rem 0;
+        }
+
+        .code-block code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* WP Table Block Extended Styles */
+        .wp-block-table {
+            font-size: var(--wtbe-font-size);
+            line-height: 1.5;
+            display: block;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .wp-block-table table {
+            border: 1px solid var(--wtbe-border-color);
+            border-radius: var(--wtbe-border-radius);
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        .wp-block-table th,
+        .wp-block-table td {
+            padding: var(--wtbe-cell-padding-y) var(--wtbe-cell-padding-x);
+            font-size: inherit;
+            vertical-align: middle;
+        }
+
+        .wp-block-table th {
+            background: var(--wtbe-header-primary);
+            color: #ffffff;
+            border: none;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .wp-block-table td {
+            border: none;
+            font-weight: 400;
+        }
+
+        .wp-block-table tbody tr:nth-of-type(odd) td {
+            background-color: var(--wtbe-row-odd);
+        }
+
+        .wp-block-table tbody tr:nth-of-type(even) td {
+            background-color: var(--wtbe-row-even);
+        }
+
+        /* Header Color Variants */
+        .wp-block-table.wtbe-header-bg-dark th {
+            background-color: var(--wtbe-header-dark);
+        }
+
+        .wp-block-table.wtbe-header-bg-light th {
+            background-color: var(--wtbe-header-light);
+            color: #1f2937;
+        }
+
+        .wp-block-table.wtbe-header-bg-success th {
+            background-color: var(--wtbe-header-success);
+        }
+
+        .wp-block-table.wtbe-header-bg-warning th {
+            background-color: var(--wtbe-header-warning);
+            color: #1f2937;
+        }
+
+        /* No borders */
+        .wp-block-table.wtbe-no-borders table {
+            border: none;
+        }
+
+        /* Minimum cell width */
+        .wp-block-table.wtbe-cell-min-width th,
+        .wp-block-table.wtbe-cell-min-width td {
+            min-width: 150px;
+        }
+
+        /* Freeze first column */
+        .wp-block-table.wtbe-freeze-first-col th:first-child,
+        .wp-block-table.wtbe-freeze-first-col td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+        }
+
+        .wp-block-table.wtbe-freeze-first-col th:first-child::after,
+        .wp-block-table.wtbe-freeze-first-col td:first-child::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 100%;
+            width: 10px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+        }
+
+        .wp-block-table.wtbe-freeze-first-col tbody tr:nth-of-type(odd) td:first-child {
+            background-color: var(--wtbe-row-odd);
+        }
+
+        .wp-block-table.wtbe-freeze-first-col tbody tr:nth-of-type(even) td:first-child {
+            background-color: var(--wtbe-row-even);
+        }
+
+        /* Center header text */
+        .wp-block-table.wtbe-header-text-center th {
+            text-align: center;
+        }
+
+        /* CTA Button */
+        .wp-block-table td a.wtbe-cta {
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--wtbe-cta-text);
+            padding: 8px 24px;
+            background-color: var(--wtbe-cta-bg);
+            border-radius: var(--wtbe-border-radius);
+            border: none;
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color 150ms ease;
+        }
+
+        .wp-block-table td a.wtbe-cta:hover {
+            background-color: var(--wtbe-cta-hover);
+        }
+
+        /* Scroll container for freeze demo */
+        .scroll-container {
+            max-width: 500px;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+        }
+
+        footer a {
+            color: #1e40af;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>WP Table Block Extended</h1>
+        <p class="subtitle">A WordPress plugin that extends the core table block with powerful styling options</p>
+    </header>
+
+    <!-- Basic Table -->
+    <section class="demo-section">
+        <span class="feature-badge">Default Style</span>
+        <h2>Basic Table with Zebra Stripes</h2>
+        <p>The default table style includes a primary blue header and alternating row colors for better readability.</p>
+
+        <figure class="wp-block-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Wireless Headphones</td>
+                        <td>Electronics</td>
+                        <td>$149.99</td>
+                        <td>In Stock</td>
+                    </tr>
+                    <tr>
+                        <td>Running Shoes</td>
+                        <td>Sports</td>
+                        <td>$89.99</td>
+                        <td>In Stock</td>
+                    </tr>
+                    <tr>
+                        <td>Coffee Maker</td>
+                        <td>Kitchen</td>
+                        <td>$79.99</td>
+                        <td>Low Stock</td>
+                    </tr>
+                    <tr>
+                        <td>Desk Lamp</td>
+                        <td>Office</td>
+                        <td>$34.99</td>
+                        <td>In Stock</td>
+                    </tr>
+                </tbody>
+            </table>
+        </figure>
+    </section>
+
+    <!-- Header Color Variants -->
+    <section class="demo-section">
+        <span class="feature-badge">Header Colors</span>
+        <h2>Header Background Color Options</h2>
+        <p>Choose from multiple header color themes to match your site's design.</p>
+
+        <h3>Dark Header</h3>
+        <figure class="wp-block-table wtbe-header-bg-dark">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Basic</th>
+                        <th>Pro</th>
+                        <th>Enterprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Users</td>
+                        <td>1</td>
+                        <td>5</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>Storage</td>
+                        <td>5 GB</td>
+                        <td>50 GB</td>
+                        <td>500 GB</td>
+                    </tr>
+                </tbody>
+            </table>
+        </figure>
+
+        <h3>Success Header (Green)</h3>
+        <figure class="wp-block-table wtbe-header-bg-success">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Status</th>
+                        <th>Assigned To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Design Review</td>
+                        <td>Complete</td>
+                        <td>Sarah</td>
+                    </tr>
+                    <tr>
+                        <td>Code Review</td>
+                        <td>In Progress</td>
+                        <td>Mike</td>
+                    </tr>
+                </tbody>
+            </table>
+        </figure>
+
+        <h3>Warning Header (Orange)</h3>
+        <figure class="wp-block-table wtbe-header-bg-warning">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Alert</th>
+                        <th>Priority</th>
+                        <th>Action Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Server Load High</td>
+                        <td>Medium</td>
+                        <td>Monitor</td>
+                    </tr>
+                    <tr>
+                        <td>SSL Expiring</td>
+                        <td>High</td>
+                        <td>Renew Certificate</td>
+                    </tr>
+                </tbody>
+            </table>
+        </figure>
+
+        <h3>Light Header (Gray)</h3>
+        <figure class="wp-block-table wtbe-header-bg-light">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Event</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jan 15</td>
+                        <td>Team Meeting</td>
+                        <td>Room A</td>
+                    </tr>
+                    <tr>
+                        <td>Jan 20</td>
+                        <td>Workshop</td>
+                        <td>Online</td>
+                    </tr>
+                </tbody>
+            </table>
+        </figure>
+    </section>
+
+    <!-- Freeze First Column -->
+    <section class="demo-section">
+        <span class="feature-badge">Sticky Column</span>
+        <h2>Freeze First Column</h2>
+        <p>Keep the first column visible while scrolling horizontally - perfect for comparison tables. <strong>Try scrolling the table below!</strong></p>
+
+        <div class="scroll-container">
+            <figure class="wp-block-table wtbe-freeze-first-col wtbe-cell-min-width">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bank</th>
+                            <th>Interest Rate</th>
+                            <th>Min Deposit</th>
+                            <th>Monthly Fee</th>
+                            <th>ATM Access</th>
+                            <th>Online Banking</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Bank Alpha</strong></td>
+                            <td>2.5%</td>
+                            <td>$100</td>
+                            <td>$0</td>
+                            <td>Free</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bank Beta</strong></td>
+                            <td>2.25%</td>
+                            <td>$50</td>
+                            <td>$5</td>
+                            <td>$2/use</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bank Gamma</strong></td>
+                            <td>3.0%</td>
+                            <td>$500</td>
+                            <td>$0</td>
+                            <td>Free</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bank Delta</strong></td>
+                            <td>1.75%</td>
+                            <td>$0</td>
+                            <td>$0</td>
+                            <td>Free</td>
+                            <td>Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+        </div>
+    </section>
+
+    <!-- CTA Buttons -->
+    <section class="demo-section">
+        <span class="feature-badge">CTA Shortcode</span>
+        <h2>Table with CTA Buttons</h2>
+        <p>Add call-to-action buttons inside table cells using the <code>[wtbe_cta]</code> shortcode.</p>
+
+        <div class="code-block">
+            <code>[wtbe_cta url="https://example.com" label="View Details" nofollow="true" newtab="true"]</code>
+        </div>
+
+        <figure class="wp-block-table wtbe-header-bg-dark wtbe-header-text-center">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plan</th>
+                        <th>Price</th>
+                        <th>Features</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Starter</strong></td>
+                        <td>$9/mo</td>
+                        <td>5 Projects, 1 GB Storage</td>
+                        <td><a href="#" class="wtbe-cta">Get Started</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Professional</strong></td>
+                        <td>$29/mo</td>
+                        <td>Unlimited Projects, 50 GB Storage</td>
+                        <td><a href="#" class="wtbe-cta">Get Started</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Enterprise</strong></td>
+                        <td>$99/mo</td>
+                        <td>Everything + Priority Support</td>
+                        <td><a href="#" class="wtbe-cta">Contact Sales</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </figure>
+    </section>
+
+    <!-- No Borders -->
+    <section class="demo-section">
+        <span class="feature-badge">Borderless</span>
+        <h2>Table Without Borders</h2>
+        <p>A cleaner look with the outer border removed.</p>
+
+        <figure class="wp-block-table wtbe-no-borders">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>This Month</th>
+                        <th>Last Month</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Page Views</td>
+                        <td>125,000</td>
+                        <td>118,000</td>
+                        <td>+5.9%</td>
+                    </tr>
+                    <tr>
+                        <td>Unique Visitors</td>
+                        <td>45,000</td>
+                        <td>42,000</td>
+                        <td>+7.1%</td>
+                    </tr>
+                    <tr>
+                        <td>Bounce Rate</td>
+                        <td>32%</td>
+                        <td>35%</td>
+                        <td>-8.6%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </figure>
+    </section>
+
+    <!-- Center Header Text -->
+    <section class="demo-section">
+        <span class="feature-badge">Text Alignment</span>
+        <h2>Centered Header Text</h2>
+        <p>Center-align header text for a more balanced look in comparison tables.</p>
+
+        <figure class="wp-block-table wtbe-header-text-center wtbe-header-bg-success">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Quarter</th>
+                        <th>Revenue</th>
+                        <th>Expenses</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Q1 2024</td>
+                        <td>$1.2M</td>
+                        <td>$800K</td>
+                        <td>$400K</td>
+                    </tr>
+                    <tr>
+                        <td>Q2 2024</td>
+                        <td>$1.5M</td>
+                        <td>$900K</td>
+                        <td>$600K</td>
+                    </tr>
+                    <tr>
+                        <td>Q3 2024</td>
+                        <td>$1.8M</td>
+                        <td>$1.0M</td>
+                        <td>$800K</td>
+                    </tr>
+                </tbody>
+            </table>
+        </figure>
+    </section>
+
+    <!-- Shortcodes Reference -->
+    <section class="demo-section">
+        <span class="feature-badge">Reference</span>
+        <h2>Available Shortcodes</h2>
+
+        <h3>Cell Width Placeholder</h3>
+        <p>Force a minimum width for a table cell:</p>
+        <div class="code-block">
+            <code>[wtbe_placeholder width="300px"]</code>
+        </div>
+
+        <h3>CTA Button</h3>
+        <p>Add a styled button link in a table cell:</p>
+        <div class="code-block">
+            <code>[wtbe_cta url="https://example.com" label="Click Here" nofollow="true" sponsored="false" newtab="true" class="custom-class" id="my-cta"]</code>
+        </div>
+
+        <table style="width:100%; border-collapse:collapse; margin-top:1rem;">
+            <tr style="border-bottom:1px solid #e5e7eb;">
+                <td style="padding:8px;"><code>url</code></td>
+                <td style="padding:8px;">The link destination (required)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e5e7eb;">
+                <td style="padding:8px;"><code>label</code></td>
+                <td style="padding:8px;">Button text (default: "Click Here")</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e5e7eb;">
+                <td style="padding:8px;"><code>newtab</code></td>
+                <td style="padding:8px;">Open in new tab (default: true)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e5e7eb;">
+                <td style="padding:8px;"><code>nofollow</code></td>
+                <td style="padding:8px;">Add rel="nofollow" (default: false)</td>
+            </tr>
+            <tr>
+                <td style="padding:8px;"><code>sponsored</code></td>
+                <td style="padding:8px;">Add rel="sponsored" (default: false)</td>
+            </tr>
+        </table>
+    </section>
+
+    <footer>
+        <p>
+            <strong>WP Table Block Extended</strong> by <a href="https://www.firascodes.ca">Firas Codes</a>
+        </p>
+        <p>
+            <a href="https://github.com/firasdeveloper/wp-table-block-extended">View on GitHub</a>
+        </p>
+    </footer>
+</body>
+</html>

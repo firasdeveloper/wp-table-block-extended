@@ -1,0 +1,21 @@
+/**
+ * Editor-specific styles for WP Table Block Extended
+ * These styles apply only in the Gutenberg editor
+ */
+
+// Import the shared table styles
+@import './style.scss';
+
+// Editor-specific adjustments
+.editor-styles-wrapper {
+	.wp-block-table {
+		// Ensure controls are visible in editor
+		&.wtbe-freeze-first-col {
+			// Disable sticky positioning in editor to prevent layout issues
+			th:first-child,
+			td:first-child {
+				position: relative;
+			}
+		}
+	}
+}

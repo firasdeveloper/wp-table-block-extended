@@ -1,0 +1,45 @@
+{
+	"name": "wp-table-block-extended",
+	"version": "1.0.0",
+	"description": "Extends the WordPress core table block with custom styling options including header colors, sticky columns, cell widths, and CTA buttons.",
+	"author": "Firas Codes",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"WordPress",
+		"Gutenberg",
+		"table",
+		"block",
+		"editor"
+	],
+	"homepage": "https://github.com/firasdeveloper/wp-table-block-extended",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/firasdeveloper/wp-table-block-extended.git"
+	},
+	"bugs": {
+		"url": "https://github.com/firasdeveloper/wp-table-block-extended/issues"
+	},
+	"engines": {
+		"node": ">=18.0.0",
+		"npm": ">=9.0.0"
+	},
+	"scripts": {
+		"start": "wp-scripts start",
+		"build": "wp-scripts build",
+		"lint:js": "wp-scripts lint-js src/",
+		"lint:js:fix": "wp-scripts lint-js src/ --fix",
+		"lint:css": "wp-scripts lint-style src/",
+		"lint:css:fix": "wp-scripts lint-style src/ --fix",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint": "npm run lint:js && npm run lint:css && npm run lint:pkg-json",
+		"lint:fix": "npm run lint:js:fix && npm run lint:css:fix",
+		"format": "wp-scripts format src/",
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"plugin-zip": "wp-scripts plugin-zip"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^27.0.0"
+	}
+}
